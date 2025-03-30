@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj Wirtualną Piosenkę</title>
+</head>
+<body>
+    <h1>Dodaj Wirtualną Piosenkę</h1>
+    <form id="add-song-form">
+        <label for="title">Tytuł:</label>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="artist">Artysta:</label>
+        <input type="text" id="artist" name="artist" required><br><br>
+
+        <label for="album">Album:</label>
+        <input type="text" id="album" name="album"><br><br>
+
+        <label for="single">Singiel:</label>
+        <input type="text" id="single" name="single"><br><br>
+
+        <button type="submit">Dodaj Piosenkę</button>
+    </form>
+
+    <script>
+        document.getElementById("add-song-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch("/api/add-song", {
+                method: "POST",
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => response.json())
+              .then(data => {
+                  if(data.success) {
+                      alert("Piosenka została dodana!");
+                  } else {
+                      alert("Wystąpił błąd podczas dodawania piosenki.");
+                  }
+              });
+        });
+    </script>
+</body>
+</html>
